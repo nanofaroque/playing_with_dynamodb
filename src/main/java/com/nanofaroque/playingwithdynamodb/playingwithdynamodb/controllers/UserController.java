@@ -15,7 +15,7 @@ public class UserController {
     @RequestMapping(value="/users", method= RequestMethod.POST)
     public @ResponseBody String insertUser() throws JsonProcessingException {
         User user=new User();
-        user.setId(1);
+        user.setId("1");
         service=new UserService();
         User usr= service.insert(user);
         ObjectMapper objectMapper = new ObjectMapper();
