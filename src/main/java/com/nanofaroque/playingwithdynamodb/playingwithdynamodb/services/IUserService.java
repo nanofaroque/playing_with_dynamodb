@@ -4,4 +4,5 @@ import com.nanofaroque.playingwithdynamodb.playingwithdynamodb.bussiness_models.
 
 public interface IUserService {
     User insert(User user);
+    User read(User user);
 }

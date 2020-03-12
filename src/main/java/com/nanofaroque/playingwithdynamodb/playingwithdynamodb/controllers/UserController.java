@@ -22,4 +22,15 @@ public class UserController {
         String json = objectMapper.writeValueAsString(usr);
         return json;
     }
+
+    @RequestMapping(value="/users", method= RequestMethod.GET)
+    public @ResponseBody String readUser() throws JsonProcessingException {
+        User user=new User();
+        user.setId("1");
+        service=new UserService();
+        User usr= service.read(user);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(usr);
+        return json;
+    }
 }
