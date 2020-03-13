@@ -6,15 +6,11 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.GetItemRequest;
-import com.amazonaws.services.dynamodbv2.model.GetItemResult;
-import com.amazonaws.services.dynamodbv2.model.ReturnConsumedCapacity;
 import com.nanofaroque.playingwithdynamodb.playingwithdynamodb.bussiness_models.User;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 
 public class UserService implements IUserService {
 
@@ -44,7 +40,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User read(User user) {
+    public List<User> read(User user) {
+        List<User> users= new ArrayList<>();
         try {
             AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
                     .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "local"))
@@ -62,15 +59,20 @@ public class UserService implements IUserService {
 
             ItemCollection<QueryOutcome> items = table.query(spec);
 
+
             Iterator<Item> iterator = items.iterator();
             while (iterator.hasNext()) {
-                System.out.println(iterator.next().toJSONPretty());
+                Item item=iterator.next();
+                User u= new User();
+                u.setCity(item.getString("city"));
+                users.add(u);
             }
 
+            return users;
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-        return null;
+        return users;
     }
 }

@@ -8,6 +8,8 @@ import com.nanofaroque.playingwithdynamodb.playingwithdynamodb.services.UserServ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class UserController {
     private IUserService service;
@@ -28,7 +30,7 @@ public class UserController {
         User user=new User();
         user.setId("1");
         service=new UserService();
-        User usr= service.read(user);
+        List<User> usr= service.read(user);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(usr);
         return json;
