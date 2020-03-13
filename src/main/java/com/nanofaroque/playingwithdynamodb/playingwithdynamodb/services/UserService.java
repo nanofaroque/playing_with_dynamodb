@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.nanofaroque.playingwithdynamodb.playingwithdynamodb.DynamoDbClient;
 import com.nanofaroque.playingwithdynamodb.playingwithdynamodb.bussiness_models.User;
 
 import java.util.ArrayList;
@@ -43,13 +44,8 @@ public class UserService implements IUserService {
     public List<User> read(User user) {
         List<User> users= new ArrayList<>();
         try {
-            AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
-                    .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "local"))
-                    .build();
-            DynamoDB dynamoDB = new DynamoDB(client);
-
             String tableName = "DataSources";
-            Table table = dynamoDB.getTable(tableName);
+            Table table = DynamoDbClient.getDynamoDb().getTable(tableName);
             QuerySpec spec = new QuerySpec()
                     .withKeyConditionExpression("p_key=:pId and begins_with(sort_key, :s)")
                     .withValueMap(new ValueMap()
